@@ -1,7 +1,11 @@
 # tCalc
 **tCalc** is a simple clipboard manager written in [Tcl/Tk](https://www.tcl.tk)
 
-It works both in CLI and GUI and can evaluate almost anything Tcl can.
+##### Features:
+* History
+* Editable entry
+* Full Tcl math support
+* CLI evaluation (optional)
 
 ### Screenshot
 ![Screenshot](images/screenshot.png "Screenshot")
