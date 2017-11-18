@@ -1,5 +1,5 @@
 # tCalc
-**tCalc** is a simple calculator written in core [Tcl/Tk](https://www.tcl.tk)
+**tCalc** is a simple calculator written in core [Tcl/Tk](https://www.tcl.tk).
 
 ##### Features:
 * On Top
