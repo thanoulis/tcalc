@@ -1,6 +1,9 @@
 # tCalc
 **tCalc** is a simple clipboard manager written in [Tcl/Tk](https://www.tcl.tk)
 
+It works both in CLI and GUI and can evaluate almost anything Tcl can.
+
+Screenshot:
 ![Screenshot](screenshot.png "Screenshot")
 
 ## DEPENDENCIES
