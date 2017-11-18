@@ -3,7 +3,7 @@
 
 It works both in CLI and GUI and can evaluate almost anything Tcl can.
 
-Screenshot:
+###### Screenshot:
 ![Screenshot](screenshot.png "Screenshot")
 
 ## DEPENDENCIES
