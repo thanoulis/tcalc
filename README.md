@@ -8,6 +8,7 @@
 * Resizable Buttons
 * Full Tcl math support
 * CLI evaluation (optional)
+* Runs in GNU/Linux, MS-Windows and Unix (MacOS not tested)
 
 ### Screenshot
 ![Screenshot](images/screenshot.png "Screenshot")
