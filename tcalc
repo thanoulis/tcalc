@@ -1,5 +1,12 @@
-#!/usr/bin/env wish
+#!/usr/bin/env tclsh
 
+# if there are command line arguments, show result in terminal and exit
+if {$argc > 0} {
+    if ![catch {set result [expr [string map {/ *1.0/} $argv]]}] {puts $result}
+    exit
+}
+
+# else, start GUI
 package require Tk
 
 namespace eval tCalc {
@@ -10,6 +17,9 @@ namespace eval tCalc {
     variable hindex    0
 }
 
+################################################################################
+# PROCEDURES
+#
 proc showMessageBox {} {
     tk_messageBox \
         -icon info -type ok -title "tCalc Help" \
@@ -85,6 +95,9 @@ proc clickButton {key} {
    .entrybox insert insert $key
 }
 
+################################################################################
+# MAIN MENU
+#
 proc createMenu {} {
     menu .menu -tearoff 0
         .menu add checkbutton -label "On Top" -underline 1 \
@@ -110,6 +123,9 @@ proc createMenu {} {
             -command {exit}
 }
 
+################################################################################
+# WIDGETS
+#
 proc createWidgets {} {
     tk::entry .entrybox -textvar tCalc::entrybox \
         -justify right -highlightthickness 0
@@ -138,6 +154,9 @@ proc createWidgets {} {
     grid .$n -columnspan 2
 }
 
+################################################################################
+# BINDINGS
+#
 proc createBindings {} {
     bind . <3>         {tk_popup .menu %X %Y}
     bind . <F1>        {showMessageBox}
@@ -153,11 +172,9 @@ proc createBindings {} {
     bind .entrybox <Down>   {historyForward}
 }
 
-if {$argc > 0} {
-    if ![catch {set result [expr [string map {/ *1.0/} $argv]]}] {puts $result}
-    exit
-}
-
+################################################################################
+# MAIN PROGRAM
+#
 createMenu
 createWidgets
 createBindings
