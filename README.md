@@ -1,5 +1,5 @@
 # tCalc
-**tCalc** is a simple clipboard manager written in [Tcl/tk] (https://www.tcl.tk)
+**tCalc** is a simple clipboard manager written in [Tcl/tk](https://www.tcl.tk)
 
 ![Screenshot](screenshot.png "Screenshot")
 
