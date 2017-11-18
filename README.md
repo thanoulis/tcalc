@@ -4,7 +4,7 @@
 It works both in CLI and GUI and can evaluate almost anything Tcl can.
 
 ###### Screenshot:
-![Screenshot](screenshot.png "Screenshot")
+![Screenshot](images/screenshot.png "Screenshot")
 
 ## DEPENDENCIES
 **Tcl** version 8.5 or later.
