@@ -1,8 +1,8 @@
 #!/usr/bin/env tclsh
 
 # if there are command line arguments, show result in terminal and exit
-if {$argc > 0} {
-    if ![catch {set result [expr [string map {/ *1.0/} $argv]]}] {puts $result}
+if {$::argc > 0} {
+    if ![catch {set result [expr [string map {/ *1.0/} $::argv]]}] {puts $result}
     exit
 }
 
