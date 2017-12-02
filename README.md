@@ -8,6 +8,7 @@
 * Resizable Buttons
 * Full Tcl math support
 * CLI evaluation (optional)
+* Customizable decimal precision
 * Runs in GNU/Linux, MS-Windows and Unix (MacOS not tested)
 
 ### Screenshot
