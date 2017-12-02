@@ -1,5 +1,7 @@
 #!/usr/bin/env tclsh
 
+set ::tcl_precision 3
+
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
     if ![catch {set result [expr [string map {/ *1.0/} $::argv]]}] {puts $result}
@@ -99,7 +101,8 @@ proc clickButton {key} {
 # MAIN MENU
 #
 proc createMenu {} {
-    menu .menu -tearoff 0
+    option add *tearOff false
+    menu .menu
         .menu add checkbutton -label "On Top" -underline 1 \
             -accelerator "F2" \
             -variable tCalc::on_top -onvalue 1 -offvalue 0 \
@@ -117,6 +120,13 @@ proc createMenu {} {
         .menu add command -label "Paste" \
             -underline 0 -accelerator "Ctrl+V" \
             -command {event generate .entrybox <<Paste>>}
+        .menu add separator
+        .menu add cascade -label "Precision" -underline 1 \
+            -menu [menu .menu.precision]
+            for {set i 0} {$i <= 9} {incr i} {
+                .menu.precision add radiobutton -label $i -underline 0 \
+                    -variable ::tcl_precision -value $i
+            }
         .menu add separator
         .menu add command -label "Exit" \
             -underline 1 -accelerator "Ctrl+Q" \
