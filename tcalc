@@ -62,8 +62,8 @@ proc historyBackward {} {
         set tCalc::hindex [expr [llength $tCalc::hlist] -1]
     }
     set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
-   .entrybox xview end
-   .entrybox icursor end
+    .entrybox xview end
+    .entrybox icursor end
 }
 
 proc historyForward {} {
@@ -82,19 +82,21 @@ proc clearEntrybox {} {
 }
 
 proc calculateResult {} {
-   lappend tCalc::hlist $tCalc::entrybox
-   set tCalc::hindex [llength $tCalc::hlist]
+    if {$tCalc::entrybox ni $tCalc::hlist} {
+        lappend tCalc::hlist $tCalc::entrybox
+        set tCalc::hindex [llength $tCalc::hlist]
+    }
     if [catch {set tCalc::entrybox [expr [string map {/ *1.0/} $tCalc::entrybox]]}] {
-       .entrybox configure -background red
-   } else {
-       .entrybox configure -background white
-   }
-   .entrybox xview end
-   .entrybox icursor end
+        .entrybox configure -background red
+    } else {
+        .entrybox configure -background white
+    }
+    .entrybox xview end
+    .entrybox icursor end
 }
 
 proc clickButton {key} {
-   .entrybox insert insert $key
+    .entrybox insert insert $key
 }
 
 ################################################################################
