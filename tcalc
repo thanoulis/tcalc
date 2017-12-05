@@ -84,8 +84,8 @@ proc clearEntrybox {} {
 proc calculateResult {} {
     if {$tCalc::entrybox ni $tCalc::hlist} {
         lappend tCalc::hlist $tCalc::entrybox
-        set tCalc::hindex [llength $tCalc::hlist]
     }
+    set tCalc::hindex [llength $tCalc::hlist]
     if [catch {set tCalc::entrybox [expr [string map {/ *1.0/} $tCalc::entrybox]]}] {
         .entrybox configure -background red
     } else {
@@ -155,9 +155,9 @@ proc createWidgets {} {
     foreach row $calc_buttons {
         foreach key $row {
            switch -- $key {
-               =        {set command calculateResult}
-               C        {set command clearEntrybox}
-               default  {set command "clickButton $key"}
+               =       {set command calculateResult}
+               C       {set command clearEntrybox}
+               default {set command "clickButton $key"}
            }
            lappend buttons [tk::button .[incr n] -text $key -takefocus 0 -command $command]
        }
