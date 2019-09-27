@@ -1,6 +1,6 @@
 #!/usr/bin/env tclsh
 
-set ::tcl_precision 3
+set ::tcl_precision 7
 
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
