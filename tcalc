@@ -2,30 +2,36 @@
 
 set ::tcl_precision 7
 
+################################################################################
+# COMMAND LINE
+#
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
-    if ![catch {set result [expr [string map {/ *1.0/} $::argv]]}] {puts $result}
-    exit
+  if ![catch {set result [expr [string map {/ *1.0/} $::argv]]}] {puts $result}
+  exit
 }
 
 # else, start GUI
 package require Tk
 
+################################################################################
+# VARIABLES
+#
 namespace eval tCalc {
-    variable on_top    0
-    variable resizable 0
-    variable entrybox  {}
-    variable hlist     [list]
-    variable hindex    0
+  variable on_top    0
+  variable resizable 0
+  variable entrybox  {}
+  variable hlist     [list]
+  variable hindex    0
 }
 
 ################################################################################
 # PROCEDURES
 #
 proc showMessageBox {} {
-    tk_messageBox \
-        -icon info -type ok -title "tCalc Help" \
-        -message "tCalc Help" -detail \
+  tk_messageBox \
+    -icon info -type ok -title "tCalc Help" \
+    -message "tCalc Help" -detail \
 "Bindings:
 F1:\tHelp
 F2:\tOn Top
@@ -57,131 +63,131 @@ tan\tatan\ttanh\t"
 }
 
 proc historyBackward {} {
-    incr tCalc::hindex -1
-    if {$tCalc::hindex < 0} {
-        set tCalc::hindex [expr [llength $tCalc::hlist] -1]
-    }
-    set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
-    .entrybox xview end
-    .entrybox icursor end
+  incr tCalc::hindex -1
+  if {$tCalc::hindex < 0} {
+    set tCalc::hindex [expr [llength $tCalc::hlist] -1]
+  }
+  set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
+  .entrybox xview end
+  .entrybox icursor end
 }
 
 proc historyForward {} {
-    incr tCalc::hindex
-    if {$tCalc::hindex > [expr [llength $tCalc::hlist] -1]} {
-        set tCalc::hindex 0
-    }
-    set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
-   .entrybox xview end
-   .entrybox icursor end
+  incr tCalc::hindex
+  if {$tCalc::hindex > [expr [llength $tCalc::hlist] -1]} {
+    set tCalc::hindex 0
+  }
+  set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
+ .entrybox xview end
+ .entrybox icursor end
 }
 
 proc clearEntrybox {} {
-    set tCalc::entrybox ""
-    .entrybox configure -background white
+  set tCalc::entrybox ""
+  .entrybox configure -background white
 }
 
 proc calculateResult {} {
-    if {$tCalc::entrybox ni $tCalc::hlist} {
-        lappend tCalc::hlist $tCalc::entrybox
-    }
-    set tCalc::hindex [llength $tCalc::hlist]
-    if [catch {set tCalc::entrybox [expr [string map {/ *1.0/} $tCalc::entrybox]]}] {
-        .entrybox configure -background red
-    } else {
-        .entrybox configure -background white
-    }
-    .entrybox xview end
-    .entrybox icursor end
+  if {$tCalc::entrybox ni $tCalc::hlist} {
+    lappend tCalc::hlist $tCalc::entrybox
+  }
+  set tCalc::hindex [llength $tCalc::hlist]
+  if [catch {set tCalc::entrybox [expr [string map {/ *1.0/} $tCalc::entrybox]]}] {
+    .entrybox configure -background red
+  } else {
+    .entrybox configure -background white
+  }
+  .entrybox xview end
+  .entrybox icursor end
 }
 
 proc clickButton {key} {
-    .entrybox insert insert $key
+  .entrybox insert insert $key
 }
 
 ################################################################################
 # MAIN MENU
 #
 proc createMenu {} {
-    option add *tearOff false
-    menu .menu
-        .menu add checkbutton -label "On Top" -underline 1 \
-            -accelerator "F2" \
-            -variable tCalc::on_top -onvalue 1 -offvalue 0 \
-            -command {wm attributes . -topmost $tCalc::on_top}
-        .menu add checkbutton -label "Resizable" -underline 4 \
-            -variable tCalc::resizable -onvalue 1 -offvalue 0 \
-            -command {wm resizable . $tCalc::resizable 0}
-        .menu add separator
-        .menu add command -label "Cut" \
-            -underline 2 -accelerator "Ctrl+X" \
-            -command {event generate .entrybox <<Cut>>}
-        .menu add command -label "Copy" \
-            -underline 0 -accelerator "Ctrl+C" \
-            -command {event generate .entrybox <<Copy>>}
-        .menu add command -label "Paste" \
-            -underline 0 -accelerator "Ctrl+V" \
-            -command {event generate .entrybox <<Paste>>}
-        .menu add separator
-        .menu add cascade -label "Precision" -underline 1 \
-            -menu [menu .menu.precision]
-            for {set i 0} {$i <= 9} {incr i} {
-                .menu.precision add radiobutton -label $i -underline 0 \
-                    -variable ::tcl_precision -value $i
-            }
-        .menu add separator
-        .menu add command -label "Exit" \
-            -underline 1 -accelerator "Ctrl+Q" \
-            -command {exit}
+  option add *tearOff false
+  menu .menu
+    .menu add checkbutton -label "On Top" -underline 1 \
+      -accelerator "F2" \
+      -variable tCalc::on_top -onvalue 1 -offvalue 0 \
+      -command {wm attributes . -topmost $tCalc::on_top}
+    .menu add checkbutton -label "Resizable" -underline 4 \
+      -variable tCalc::resizable -onvalue 1 -offvalue 0 \
+      -command {wm resizable . $tCalc::resizable 0}
+    .menu add separator
+    .menu add command -label "Cut" \
+      -underline 2 -accelerator "Ctrl+X" \
+      -command {event generate .entrybox <<Cut>>}
+    .menu add command -label "Copy" \
+      -underline 0 -accelerator "Ctrl+C" \
+      -command {event generate .entrybox <<Copy>>}
+    .menu add command -label "Paste" \
+      -underline 0 -accelerator "Ctrl+V" \
+      -command {event generate .entrybox <<Paste>>}
+    .menu add separator
+    .menu add cascade -label "Precision" -underline 1 \
+      -menu [menu .menu.precision]
+      for {set i 0} {$i <= 9} {incr i} {
+        .menu.precision add radiobutton -label $i -underline 0 \
+          -variable ::tcl_precision -value $i
+      }
+    .menu add separator
+    .menu add command -label "Exit" \
+      -underline 1 -accelerator "Ctrl+Q" \
+      -command {exit}
 }
 
 ################################################################################
 # WIDGETS
 #
 proc createWidgets {} {
-    tk::entry .entrybox -textvar tCalc::entrybox \
-        -justify right -highlightthickness 0
-    grid .entrybox -columnspan 5 -sticky we -padx 1 -pady 1
-    grid columnconfigure . .entrybox -weight 1
+  tk::entry .entrybox -textvar tCalc::entrybox \
+    -justify right -highlightthickness 0
+  grid .entrybox -columnspan 5 -sticky we -padx 1 -pady 1
+  grid columnconfigure . .entrybox -weight 1
 
-    set calc_buttons {
-        {7 8 9 ( )}
-        {4 5 6 * /}
-        {1 2 3 + -}
-        {C 0 . =}
+  set calc_buttons {
+    {7 8 9 ( )}
+    {4 5 6 * /}
+    {1 2 3 + -}
+    {C 0 . =}
+  }
+  set n 0
+  set buttons [list]
+  foreach row $calc_buttons {
+    foreach key $row {
+     switch -- $key {
+       =       {set command calculateResult}
+       C       {set command clearEntrybox}
+       default {set command "clickButton $key"}
+     }
+     lappend buttons [tk::button .[incr n] -text $key -takefocus 0 -command $command]
     }
-    set n 0
-    set buttons [list]
-    foreach row $calc_buttons {
-        foreach key $row {
-           switch -- $key {
-               =       {set command calculateResult}
-               C       {set command clearEntrybox}
-               default {set command "clickButton $key"}
-           }
-           lappend buttons [tk::button .[incr n] -text $key -takefocus 0 -command $command]
-       }
-       grid {*}$buttons -sticky we -padx 1 -pady 1
-    }
-    grid .$n -columnspan 2
+    grid {*}$buttons -sticky we -padx 1 -pady 1
+  }
+  grid .$n -columnspan 2
 }
 
 ################################################################################
 # BINDINGS
 #
 proc createBindings {} {
-    bind . <3>         {tk_popup .menu %X %Y}
-    bind . <F1>        {showMessageBox}
-    bind . <F2>        {.menu invoke "On Top"}
-    bind . <Escape>    {clearEntrybox}
-    bind . <Control-c> {clearEntrybox}
-    bind . <Control-q> {exit}
-    bind . <Control-a> {event generate %W <Tab>}
-    bind . <KP_Enter>  {event generate %W <Return>}
+  bind . <3>         {tk_popup .menu %X %Y}
+  bind . <F1>        {showMessageBox}
+  bind . <F2>        {.menu invoke "On Top"}
+  bind . <Escape>    {clearEntrybox}
+  bind . <Control-c> {clearEntrybox}
+  bind . <Control-q> {exit}
+  bind . <Control-a> {event generate %W <Tab>}
+  bind . <KP_Enter>  {event generate %W <Return>}
 
-    bind .entrybox <Return> {calculateResult}
-    bind .entrybox <Up>     {historyBackward}
-    bind .entrybox <Down>   {historyForward}
+  bind .entrybox <Return> {calculateResult}
+  bind .entrybox <Up>     {historyBackward}
+  bind .entrybox <Down>   {historyForward}
 }
 
 ################################################################################
