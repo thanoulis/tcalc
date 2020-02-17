@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=tCalc
+GenericName=Calculator
+Comment=A simple calculator written in core Tcl/Tk
+Exec=tcalc %F
+Icon=accessories-calculator
+Type=Application
+Terminal=false
+Keywords=Calculator;
+Categories=Utility;Calculator
+StartupNotify=false
