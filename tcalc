@@ -199,6 +199,6 @@ createBindings
 focus .entrybox
 
 wm title     . "tCalc"
-wm minsize   . 195 150
+wm minsize   . 140 140
 wm resizable . $tCalc::resizable 0
 wm protocol  . WM_DELETE_WINDOW {exit}
