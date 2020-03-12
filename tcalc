@@ -20,7 +20,7 @@ package require Tk
 namespace eval tCalc {
   variable on_top    false
   variable resizable 0
-  variable entrybox  {}
+  variable entry     {}
   variable hlist     [list]
   variable hindex    0
 }
@@ -65,25 +65,25 @@ proc historyBackward {widget} {
   if {$tCalc::hindex < 0} {
     set tCalc::hindex [expr [llength $tCalc::hlist] -1]
   }
-  set tCalc::entrybox [lindex $tCalc::hlist $tCalc::hindex]
+  set tCalc::entry [lindex $tCalc::hlist $tCalc::hindex]
   $widget xview end
   $widget icursor end
 }
 
-proc clearEntrybox {widget} {
-  set tCalc::entrybox {}
-  $widget configure -style white.TCombobox
+proc clearEntry {widget} {
+  set tCalc::entry ""
+  $widget configure -style valid.TCombobox
 }
 
 proc calculateResult {widget} {
-  if {$tCalc::entrybox ni $tCalc::hlist} {
-    lappend tCalc::hlist $tCalc::entrybox
+  if {$tCalc::entry ni $tCalc::hlist} {
+    lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  if [catch {set tCalc::entrybox [expr [string map {/ *1.0/} $tCalc::entrybox]]}] {
-    $widget configure -style red.TCombobox
+  if [catch {set tCalc::entry [expr [string map {/ *1.0/} $tCalc::entry]]}] {
+    $widget configure -style error.TCombobox
   } else {
-    $widget configure -style white.TCombobox
+    $widget configure -style valid.TCombobox
   }
   $widget xview end
   $widget icursor end
@@ -112,13 +112,13 @@ proc createMenu {} {
     .menu add separator
     .menu add command -label "Cut" \
       -underline 2 -accelerator "Ctrl+X" \
-      -command {event generate .entrybox <<Cut>>}
+      -command {event generate .entry <<Cut>>}
     .menu add command -label "Copy" \
       -underline 0 -accelerator "Ctrl+C" \
-      -command {event generate .entrybox <<Copy>>}
+      -command {event generate .entry <<Copy>>}
     .menu add command -label "Paste" \
       -underline 0 -accelerator "Ctrl+V" \
-      -command {event generate .entrybox <<Paste>>}
+      -command {event generate .entry <<Paste>>}
     .menu add separator
     .menu add cascade -label "Precision" -underline 1 \
       -menu [menu .menu.precision]
@@ -133,20 +133,17 @@ proc createMenu {} {
 }
 
 ################################################################################
-# TTK STYLES
-#
-ttk::style configure white.TCombobox -fieldbackground white
-ttk::style configure red.TCombobox   -fieldbackground red
-
-################################################################################
 # WIDGETS
 #
 proc createWidgets {} {
-  ttk::combobox .entrybox -justify right -style white.TCombobox \
-    -textvariable tCalc::entrybox -values $tCalc::hlist \
-    -postcommand {.entrybox configure -values $tCalc::hlist}
-  grid .entrybox -columnspan 5 -sticky we -padx 1 -pady 1
-  grid columnconfigure . .entrybox -weight 1
+  ttk::style configure valid.TCombobox -fieldbackground white
+  ttk::style configure error.TCombobox -fieldbackground red
+
+  ttk::combobox .entry -justify right -style valid.TCombobox \
+    -textvariable tCalc::entry -values $tCalc::hlist \
+    -postcommand {.entry configure -values $tCalc::hlist}
+  grid .entry -columnspan 5 -sticky we -padx 1 -pady 1
+  grid columnconfigure . .entry -weight 1
 
   set calc_buttons {
     {7 8 9 ( )}
@@ -159,11 +156,11 @@ proc createWidgets {} {
   foreach row $calc_buttons {
     foreach key $row {
       switch -- $key {
-        =       {set command [list calculateResult .entrybox]}
-        C       {set command [list clearEntrybox .entrybox]}
-        default {set command [list clickButton .entrybox $key]}
+        =       {set command [list calculateResult .entry]}
+        C       {set command [list clearEntry .entry]}
+        default {set command [list clickButton .entry $key]}
       }
-      lappend buttons [tk::button .[incr n] -text $key -takefocus 0 \
+      lappend buttons [tk::button ".[incr n]" -text $key -takefocus 0 \
         -command $command]
     }
     grid {*}$buttons -sticky we -padx 1 -pady 1
@@ -175,19 +172,17 @@ proc createWidgets {} {
 # BINDINGS
 #
 proc createBindings {} {
-  bind . <3>         {tk_popup .menu %X %Y}
-  bind . <F1>        {.menu invoke "Help..."}
-  bind . <F2>        {.menu invoke "On Top"}
-  bind . <Escape>    {clearEntrybox %W}
-  bind . <Control-q> {exit}
-  bind . <Control-Q> {exit}
-  bind . <Control-a> {event generate %W <Tab>}
-  bind . <Control-A> {event generate %W <Tab>}
-  bind . <KP_Enter>  {event generate %W <Return>}
+  bind all <3>         {tk_popup .menu %X %Y}
+  bind all <F1>        {.menu invoke "Help..."}
+  bind all <F2>        {.menu invoke "On Top"}
+  bind all <Escape>    {clearEntry %W}
+  bind all <Control-q> {exit}
+  bind all <Control-a> {event generate %W <Tab>}
+  bind all <KP_Enter>  {event generate %W <Return>}
 
-  bind .entrybox <Return>             {calculateResult %W}
-  bind .entrybox <Up>                 {historyBackward %W}
-  bind .entrybox <<ComboboxSelected>> {%W selection clear}
+  bind .entry <Return>             {calculateResult %W}
+  bind .entry <Up>                 {historyBackward %W}
+  bind .entry <<ComboboxSelected>> {%W selection clear}
 }
 
 ################################################################################
@@ -196,7 +191,7 @@ proc createBindings {} {
 createMenu
 createWidgets
 createBindings
-focus .entrybox
+focus .entry
 
 wm title     . "tCalc"
 wm minsize   . 100 100
