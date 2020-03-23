@@ -7,7 +7,7 @@ set ::tcl_precision 7
 #
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
-  if ![catch {set result [expr [string map {/ *1.0/} $::argv]]}] {puts $result}
+  if {![catch {set result [expr [string map {/ *1.0/} $::argv]]}]} {puts $result}
   exit
 }
 
@@ -63,7 +63,7 @@ tan\tatan\ttanh\t"
 proc historyBackward {widget} {
   incr tCalc::hindex -1
   if {$tCalc::hindex < 0} {
-    set tCalc::hindex [expr [llength $tCalc::hlist] -1]
+    set tCalc::hindex [expr {[llength $tCalc::hlist] -1}]
   }
   set tCalc::entry [lindex $tCalc::hlist $tCalc::hindex]
   $widget xview end
@@ -80,7 +80,7 @@ proc calculateResult {widget} {
     lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  if [catch {set tCalc::entry [expr [string map {/ *1.0/} $tCalc::entry]]}] {
+  if {[catch {set tCalc::entry [expr [string map {/ 1.0/} $tCalc::entry]]}]} {
     $widget configure -style error.TCombobox
   } else {
     $widget configure -style valid.TCombobox
