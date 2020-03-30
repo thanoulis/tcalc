@@ -80,7 +80,7 @@ proc calculateResult {widget} {
     lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  if {[catch {set tCalc::entry [expr [string map {/ 1.0/} $tCalc::entry]]}]} {
+  if {[catch {set tCalc::entry [expr [string map {/ *1.0/} $tCalc::entry]]}]} {
     $widget configure -style error.TCombobox
   } else {
     $widget configure -style valid.TCombobox
