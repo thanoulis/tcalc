@@ -175,13 +175,13 @@ proc createBindings {} {
   bind all <3>         {tk_popup .menu %X %Y}
   bind all <F1>        {.menu invoke "Help..."}
   bind all <F2>        {.menu invoke "On Top"}
-  bind all <Escape>    {clearEntry %W}
-  bind all <Control-q> {exit}
-  bind all <Control-a> {event generate %W <Tab>}
   bind all <KP_Enter>  {event generate %W <Return>}
 
-  bind .entry <Return>             {calculateResult %W}
-  bind .entry <Up>                 {historyBackward %W}
+  bind .entry <Up>        {historyBackward %W}
+  bind .entry <Return>    {calculateResult %W}
+  bind .entry <Escape>    {clearEntry %W}
+  bind .entry <Control-q> {exit}
+  bind .entry <Control-a> {event generate %W <Tab>}
   bind .entry <<ComboboxSelected>> {%W selection clear}
 }
 
