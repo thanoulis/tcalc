@@ -3,27 +3,28 @@
 set ::tcl_precision 7
 
 ################################################################################
-# COMMAND LINE
-#
-# if there are command line arguments, show result in terminal and exit
-if {$::argc > 0} {
-  if {![catch {set result [expr [string map {/ *1.0/} $::argv]]}]} {puts $result}
-  exit
-}
-
-# else, start GUI
-package require Tk
-
-################################################################################
 # VARIABLES
 #
 namespace eval tCalc {
+  variable safe      [interp create -safe]
   variable on_top    false
   variable resizable 0
   variable entry     {}
   variable hlist     [list]
   variable hindex    0
 }
+
+################################################################################
+# COMMAND LINE
+#
+# if there are command line arguments, show result in terminal and exit
+if {$::argc > 0} {
+  if {![catch {set result [$tCalc::safe eval "expr [string map {/ *1.0/} $::argv]"]}]} {puts $result}
+  exit
+}
+
+# else, start GUI
+package require Tk
 
 ################################################################################
 # PROCEDURES
@@ -80,7 +81,7 @@ proc calculateResult {widget} {
     lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  if {[catch {set tCalc::entry [expr [string map {/ *1.0/} $tCalc::entry]]}]} {
+  if {[catch {set tCalc::entry [$tCalc::safe eval "expr [string map {/ *1.0/} $tCalc::entry]"]}]} {
     $widget configure -style error.TCombobox
   } else {
     $widget configure -style valid.TCombobox
