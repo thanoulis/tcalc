@@ -22,7 +22,6 @@ if {$::argc > 0} {
   if {![catch {set result [$tCalc::safe eval "expr [string map {/ *1.0/} $::argv]"]}]} {puts $result}
   exit
 }
-
 # else, start GUI
 package require Tk
 
