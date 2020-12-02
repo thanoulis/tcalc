@@ -7,11 +7,21 @@ set ::tcl_precision 7
 #
 namespace eval tCalc {
   variable safe      [interp create -safe]
-  variable on_top    false
+  variable ontop     {false}
   variable resizable 0
   variable entry     {}
   variable hlist     [list]
   variable hindex    0
+}
+
+# helper function to evaluate with safe interpreter
+proc tCalc::Evaluate {args} {
+  set expression "expr [string map {/ *1.0/} $args]"
+  if {[catch {set result [$tCalc::safe eval $expression]} msg]} {
+    return [lindex [split $msg "\n"] 0]
+  } else {
+    return $result
+  }
 }
 
 ################################################################################
@@ -19,8 +29,12 @@ namespace eval tCalc {
 #
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
-  if {![catch {set result [$tCalc::safe eval "expr [string map {/ *1.0/} $::argv]"]}]} {puts $result}
-  exit
+  puts [set result [tCalc::Evaluate $::argv]]
+  if {[string is double $result]} {
+    exit 0
+  } else {
+    exit 255
+  }
 }
 # else, start GUI
 package require Tk
@@ -28,84 +42,65 @@ package require Tk
 ################################################################################
 # PROCEDURES
 #
-proc showHelp {} {
-  tk_messageBox -title "tCalc Help" -icon info -type ok -parent . \
-    -message "tCalc Help" -detail \
-"Bindings:
-F1:\tHelp
-F2:\tOn Top
-Up:\tHistory: Previous
-Down:\tHistory: Select
-Enter:\tCalculate
-Escape:\tClear
-Ctrl+Q:\tExit
-Menu:\tRight Click
+proc tCalc::Help {} {
+  tk_messageBox -title "About tCalc" -icon info -type ok -parent . \
+    -message "tCalc 0.2.2" -detail \
+{A simple calculator,
+written in core Tcl/Tk.
 
-Special Operators:
-**\tpower
-%\tmodulus
+MIT License
 
-General Functions:
-log\tlog10
-sqrt\tisqrt
-hypot\texp
-pow\tfmod
-abs\tround
-min\tmax
-floor\tceil
-
-Trigonometric Functions:
-sin\tasin\tsinh\t
-cos\tacos\tcosh\t
-tan\tatan\ttanh\t"
+Copyright © Thanos Zygouris
+<athanasios.zygouris@gmail.com>}
 }
 
-proc historyBackward {widget} {
+proc tCalc::History {entry} {
   incr tCalc::hindex -1
   if {$tCalc::hindex < 0} {
     set tCalc::hindex [expr {[llength $tCalc::hlist] -1}]
   }
   set tCalc::entry [lindex $tCalc::hlist $tCalc::hindex]
-  $widget xview end
-  $widget icursor end
+  $entry xview end
+  $entry icursor end
 }
 
-proc clearEntry {widget} {
+proc tCalc::Clear {entry} {
   set tCalc::entry ""
-  $widget configure -style valid.TCombobox
+  $entry configure -style valid.TCombobox
 }
 
-proc calculateResult {widget} {
+proc tCalc::Result {entry} {
   if {$tCalc::entry ni $tCalc::hlist} {
     lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  if {[catch {set tCalc::entry [$tCalc::safe eval "expr [string map {/ *1.0/} $tCalc::entry]"]}]} {
-    $widget configure -style error.TCombobox
+  set tCalc::entry [tCalc::Evaluate $tCalc::entry]
+  if {[string is double $tCalc::entry]} {
+    $entry configure -style valid.TCombobox
   } else {
-    $widget configure -style valid.TCombobox
+    $entry configure -style error.TCombobox
   }
-  $widget xview end
-  $widget icursor end
+  $entry xview end
+  $entry icursor end
 }
 
-proc clickButton {widget key} {
-  $widget insert insert $key
+proc tCalc::Button {entry key} {
+  $entry insert insert $key
 }
 
 ################################################################################
 # MAIN MENU
 #
-proc createMenu {} {
+proc tCalc::Menu {} {
   option add *tearOff false
   menu .menu
     .menu add command -label "Help..." -underline 0 \
-      -accelerator "F1" -command {showHelp}
+      -accelerator "F1" -command {tCalc::Help}
     .menu add separator
-    .menu add checkbutton -label "On Top" -underline 0 \
+    .menu add checkbutton -label "On Top" -underline 3 \
       -accelerator "F2" \
-      -variable tCalc::on_top -onvalue "true" -offvalue "false" \
-      -command {wm attributes . -topmost $tCalc::on_top}
+      -variable tCalc::ontop -onvalue "true" -offvalue "false" \
+      -command {wm attributes . -topmost $tCalc::ontop}
     .menu add checkbutton -label "Resizable" -underline 4 \
       -variable tCalc::resizable -onvalue 1 -offvalue 0 \
       -command {wm resizable . $tCalc::resizable 0}
@@ -135,7 +130,7 @@ proc createMenu {} {
 ################################################################################
 # WIDGETS
 #
-proc createWidgets {} {
+proc tCalc::Widgets {} {
   ttk::style configure valid.TCombobox -fieldbackground white
   ttk::style configure error.TCombobox -fieldbackground red
 
@@ -151,35 +146,35 @@ proc createWidgets {} {
     {1 2 3 + -}
     {C 0 . =}
   }
-  set n 0
+  set i 0
   set buttons [list]
   foreach row $calc_buttons {
     foreach key $row {
       switch -- $key {
-        =       {set command [list calculateResult .entry]}
-        C       {set command [list clearEntry .entry]}
-        default {set command [list clickButton .entry $key]}
+        =       {set command [list tCalc::Result .entry]}
+        C       {set command [list tCalc::Clear .entry]}
+        default {set command [list tCalc::Button .entry $key]}
       }
-      lappend buttons [tk::button ".[incr n]" -text $key -takefocus 0 \
+      lappend buttons [tk::button ".[incr i]" -text $key -takefocus 0 \
         -command $command]
     }
     grid {*}$buttons -sticky we -padx 1 -pady 1
   }
-  grid .$n -columnspan 2
+  grid .$i -columnspan 2
 }
 
 ################################################################################
 # BINDINGS
 #
-proc createBindings {} {
+proc tCalc::Bindings {} {
   bind all <3>         {tk_popup .menu %X %Y}
   bind all <F1>        {.menu invoke "Help..."}
   bind all <F2>        {.menu invoke "On Top"}
   bind all <KP_Enter>  {event generate %W <Return>}
 
-  bind .entry <Up>        {historyBackward %W}
-  bind .entry <Return>    {calculateResult %W}
-  bind .entry <Escape>    {clearEntry %W}
+  bind .entry <Up>        {tCalc::History %W}
+  bind .entry <Return>    {tCalc::Result %W}
+  bind .entry <Escape>    {tCalc::Clear %W}
   bind .entry <Control-q> {exit}
   bind .entry <Control-a> {event generate %W <Tab>}
   bind .entry <<ComboboxSelected>> {%W selection clear}
@@ -188,9 +183,9 @@ proc createBindings {} {
 ################################################################################
 # MAIN PROGRAM
 #
-createMenu
-createWidgets
-createBindings
+tCalc::Menu
+tCalc::Widgets
+tCalc::Bindings
 focus .entry
 
 wm title     . "tCalc"
