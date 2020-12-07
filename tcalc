@@ -1,25 +1,78 @@
 #!/usr/bin/env tclsh
 
-set ::tcl_precision 7
-
 ################################################################################
 # VARIABLES
 #
 namespace eval tCalc {
+  variable version   {0.2.3}
   variable safe      [interp create -safe]
   variable ontop     {false}
   variable resizable 0
   variable entry     {}
   variable hlist     [list]
   variable hindex    0
+  variable precision 3
+  variable error     {___tCalcError___}
+}
+# define new 'functions' for expr
+namespace eval tcl::mathfunc {
+  proc precision {number precision} {
+    expr {double(round(10 ** $precision * $number)) / 10 ** $precision}
+  }
+  proc e {} {
+    expr {exp(1)}
+  }
+  proc p {} {
+    expr {acos(-1)}
+  }
+  proc sind {x} {
+    set pi [expr {acos(-1)}]
+    expr {sin($x * ($pi / 180))}
+  }
+  proc cosd {x} {
+    set pi [expr {acos(-1)}]
+    expr {cos($x * ($pi / 180))}
+  }
+  proc tand {x} {
+    set pi [expr {acos(-1)}]
+    expr {tan($x * ($pi / 180))}
+  }
+  proc asind {x} {
+    set pi [expr {acos(-1)}]
+    set x [expr {asin($x)}]
+    expr {$x * (180 / $pi)}
+  }
+  proc acosd {x} {
+    set pi [expr {acos(-1)}]
+    set x [expr {acos($x)}]
+    expr {$x * (180 / $pi)}
+  }
+  proc atand {x} {
+    set pi [expr {acos(-1)}]
+    set x [expr {atan($x)}]
+    expr {$x * (180 / $pi)}
+  }
+}
+
+# teach safe interpreter the new proc/functions
+foreach trig {p e sind asind cosd acosd tand atand} {
+  set trig [string cat "tcl::mathfunc::" $trig]
+  $tCalc::safe alias $trig $trig
 }
 
 # helper function to evaluate with safe interpreter
 proc tCalc::Evaluate {args} {
-  set expression "expr [string map {/ *1.0/} $args]"
-  if {[catch {set result [$tCalc::safe eval $expression]} msg]} {
-    return [lindex [split $msg "\n"] 0]
-  } else {
+  set expression [string map {/ *1.0/} [join $args]]
+  try {
+    $tCalc::safe eval "expr $expression"
+  } on error msg {
+    return $tCalc::error
+  } on ok result {
+    if {$tCalc::precision == 0} {
+      set result [expr {round($result)}]
+    } else {
+      set result [expr {precision($result,$tCalc::precision)}]
+    }
     return $result
   }
 }
@@ -29,11 +82,12 @@ proc tCalc::Evaluate {args} {
 #
 # if there are command line arguments, show result in terminal and exit
 if {$::argc > 0} {
-  puts [set result [tCalc::Evaluate $::argv]]
-  if {[string is double $result]} {
-    exit 0
-  } else {
+  set result [tCalc::Evaluate $::argv]
+  if {$result eq $tCalc::error} {
     exit 255
+  } else {
+    puts $result
+    exit 0
   }
 }
 # else, start GUI
@@ -42,18 +96,6 @@ package require Tk
 ################################################################################
 # PROCEDURES
 #
-proc tCalc::Help {} {
-  tk_messageBox -title "About tCalc" -icon info -type ok -parent . \
-    -message "tCalc 0.2.2" -detail \
-{A simple calculator,
-written in core Tcl/Tk.
-
-MIT License
-
-Copyright © Thanos Zygouris
-<athanasios.zygouris@gmail.com>}
-}
-
 proc tCalc::History {entry} {
   incr tCalc::hindex -1
   if {$tCalc::hindex < 0} {
@@ -74,11 +116,12 @@ proc tCalc::Result {entry} {
     lappend tCalc::hlist $tCalc::entry
   }
   set tCalc::hindex [llength $tCalc::hlist]
-  set tCalc::entry [tCalc::Evaluate $tCalc::entry]
-  if {[string is double $tCalc::entry]} {
-    $entry configure -style valid.TCombobox
-  } else {
+  set result [tCalc::Evaluate $tCalc::entry]
+  if {$result eq $tCalc::error} {
     $entry configure -style error.TCombobox
+  } else {
+    set tCalc::entry $result
+    $entry configure -style valid.TCombobox
   }
   $entry xview end
   $entry icursor end
@@ -88,6 +131,18 @@ proc tCalc::Button {entry key} {
   $entry insert insert $key
 }
 
+proc tCalc::About {version} {
+  tk_messageBox -title "About tCalc" -icon info -type ok -parent . \
+    -message "tCalc $version" -detail \
+{A simple calculator,
+written in core Tcl/Tk.
+
+MIT License
+
+Copyright © Thanos Zygouris
+<athanasios.zygouris@gmail.com>}
+}
+
 ################################################################################
 # MAIN MENU
 #
@@ -95,7 +150,7 @@ proc tCalc::Menu {} {
   option add *tearOff false
   menu .menu
     .menu add command -label "Help..." -underline 0 \
-      -accelerator "F1" -command {tCalc::Help}
+      -accelerator "F1" -command {tCalc::About $tCalc::version}
     .menu add separator
     .menu add checkbutton -label "On Top" -underline 3 \
       -accelerator "F2" \
@@ -117,9 +172,9 @@ proc tCalc::Menu {} {
     .menu add separator
     .menu add cascade -label "Precision" -underline 1 \
       -menu [menu .menu.precision]
-      for {set i 0} {$i <= 9} {incr i} {
+      for {set i 0} {$i <= 12} {incr i} {
         .menu.precision add radiobutton -label $i -underline 0 \
-          -variable ::tcl_precision -value $i
+          -variable tCalc::precision -value $i
       }
     .menu add separator
     .menu add command -label "Exit" \
