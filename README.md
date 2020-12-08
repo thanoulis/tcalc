@@ -56,7 +56,7 @@
 | `atan(x)`     | arc tangent        | radians |
 | `sinh(x)`     | hyperbolic sine    | radians |
 | `cosh(x)`     | hyperbolic cosine  | radians |
-| `tanh(x)      | hyperbolic tangent | radians |
+| `tanh(x)`     | hyperbolic tangent | radians |
 
 ----
 
