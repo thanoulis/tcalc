@@ -153,7 +153,7 @@ Copyright © Thanos Zygouris
 proc tCalc::Menu {} {
   option add *tearOff false
   menu .menu
-    .menu add command -label "Help..." -underline 0 \
+    .menu add command -label "About tCalc..." -underline 0 \
       -accelerator "F1" -command {tCalc::About $tCalc::version}
     .menu add separator
     .menu add checkbutton -label "On Top" -underline 3 \
@@ -176,7 +176,7 @@ proc tCalc::Menu {} {
     .menu add separator
     .menu add cascade -label "Precision" -underline 1 \
       -menu [menu .menu.precision]
-      for {set i 0} {$i <= 17} {incr i} {
+      for {set i 0} {$i <= 15} {incr i} {
         .menu.precision add radiobutton -label $i \
           -variable tCalc::precision -value $i
       }
@@ -227,7 +227,7 @@ proc tCalc::Widgets {} {
 #
 proc tCalc::Bindings {} {
   bind all <3>         {tk_popup .menu %X %Y}
-  bind all <F1>        {.menu invoke "Help..."}
+  bind all <F1>        {.menu invoke "About tCalc..."}
   bind all <F2>        {.menu invoke "On Top"}
   bind all <KP_Enter>  {event generate %W <Return>}
 
