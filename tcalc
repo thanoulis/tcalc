@@ -66,13 +66,17 @@ proc tCalc::Evaluate {args} {
   try {
     $tCalc::safe eval "expr $expression"
   } on error msg {
-    return $tCalc::error
+    puts stderr [lindex [split $msg "\n"] 0]
+    set result $tCalc::error
   } on ok result {
-    if {$tCalc::precision == 0} {
-      set result [expr {round($result)}]
-    } else {
-      set result [expr {precision($result,$tCalc::precision)}]
+    # round to user defined decimal points
+    set result [expr {precision($result,$tCalc::precision)}]
+    # avoid printing extra decimal zeros
+    set result0 [expr {round($result)}]
+    if {$result0 == $result} {
+      set result $result0
     }
+  } finally {
     return $result
   }
 }
@@ -86,7 +90,7 @@ if {$::argc > 0} {
   if {$result eq $tCalc::error} {
     exit 255
   } else {
-    puts $result
+    puts stdout $result
     exit 0
   }
 }
@@ -172,8 +176,8 @@ proc tCalc::Menu {} {
     .menu add separator
     .menu add cascade -label "Precision" -underline 1 \
       -menu [menu .menu.precision]
-      for {set i 0} {$i <= 12} {incr i} {
-        .menu.precision add radiobutton -label $i -underline 0 \
+      for {set i 0} {$i <= 17} {incr i} {
+        .menu.precision add radiobutton -label $i \
           -variable tCalc::precision -value $i
       }
     .menu add separator
