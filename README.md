@@ -19,10 +19,10 @@
 
 #### Constants & Functions
 
-| Constants | Description  |
-|-----------|--------------|
-| `p()`     | PI           |
-| `e()`     | Euler number |
+| Constants | Description          |
+|-----------|----------------------|
+| `p()`     | <span>&pi;</span>    |
+| `e()`     | <span>&#8455;</span> |
 
 | Function      | Description              | Altenative |
 |---------------|--------------------------|------------|
