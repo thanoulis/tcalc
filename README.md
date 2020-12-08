@@ -40,7 +40,7 @@
 | `max(x,y,..)` | greatest number          |
 | `min(x,y,..)` | smallest number          |
 
-| Trigonometric | Functions          | Type    |
+| Trigonometric | Description        | Type    |
 |---------------|--------------------|---------|
 | `sind(x)`     | sine               | degrees |
 | `cosd(x)`     | cosine             | degrees |
