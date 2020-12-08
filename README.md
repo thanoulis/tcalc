@@ -24,23 +24,21 @@
 | `p()`     | PI           |
 | `e()`     | Euler number |
 
-| Function      | Description          |
-|---------------|----------------------|
-| `exp(x)`      | exponential          |
-| `sqrt(x)`     | square root          |
-| `pow(x,y)`    | x power y (`x**y`)   |
-| `fmod(x,y)`   | remainder of `x/y`   |
-| `hypot(x,y)`  | hypotenuse           |
-| `abs(x)`      | absolute \|x\|       |
-| `round(x)`    | convert to integer   |
-| `ceil(x)`     | next smallest int    |
-| `floor(x)`    | previous largest int |
-| `max(x,y,..)` | greatest number      |
-| `min(x,y,..)` | smallest number      |
-| `log(x)`      | natural logarithm    |
-| `log10(x)`    | base 10 logarithm    |
-| `randr`       | random number (0,1)  |
-| `srandr(x)`   | random with seed     |
+| Function      | Description              | Altenative |
+|---------------|--------------------------|------------|
+| `sqrt(x)`     | <span>&#8730;</span>x    |
+| `pow(x,y)`    | x<sup>y</sup>            | `x**y`     |
+| `fmod(x,y)`   | remainder of `x/y`       | `x%y`      |
+| `hypot(x,y)`  | hypotenuse               |
+| `abs(x)`      | \|x\|                    |
+| `log(x)`      | ln(x)                    |
+| `log10(x)`    | log<sub>10</sub>(x)      |
+| `exp(x)`      | e<sup>x</sup>            |
+| `round(x)`    | nearest integer          |
+| `ceil(x)`     | next smallest integer    |
+| `floor(x)`    | previous largest integer |
+| `max(x,y,..)` | greatest number          |
+| `min(x,y,..)` | smallest number          |
 
 | Trigonometric | Functions          | Type    |
 |---------------|--------------------|---------|
