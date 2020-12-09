@@ -9,8 +9,7 @@ namespace eval tCalc {
   variable ontop     {false}
   variable resizable 0
   variable entry     {}
-  variable hlist     [list]
-  variable hindex    0
+  variable history   [list]
   variable precision 3
   variable error     {___tCalcError___}
 }
@@ -101,11 +100,13 @@ package require Tk
 # PROCEDURES
 #
 proc tCalc::History {entry} {
-  incr tCalc::hindex -1
-  if {$tCalc::hindex < 0} {
-    set tCalc::hindex [expr {[llength $tCalc::hlist] -1}]
+  set index [lsearch -exact $tCalc::history $tCalc::entry]
+  if {($index - 1) < 0} {
+    set index "end"
+  } else {
+    incr index -1
   }
-  set tCalc::entry [lindex $tCalc::hlist $tCalc::hindex]
+  set tCalc::entry [lindex $tCalc::history $index]
   $entry xview end
   $entry icursor end
 }
@@ -116,10 +117,9 @@ proc tCalc::Clear {entry} {
 }
 
 proc tCalc::Result {entry} {
-  if {$tCalc::entry ni $tCalc::hlist} {
-    lappend tCalc::hlist $tCalc::entry
+  if {$tCalc::entry ni $tCalc::history} {
+    lappend tCalc::history $tCalc::entry
   }
-  set tCalc::hindex [llength $tCalc::hlist]
   set result [tCalc::Evaluate $tCalc::entry]
   if {$result eq $tCalc::error} {
     $entry configure -style error.TCombobox
@@ -194,8 +194,8 @@ proc tCalc::Widgets {} {
   ttk::style configure error.TCombobox -fieldbackground red
 
   ttk::combobox .entry -justify right -style valid.TCombobox \
-    -textvariable tCalc::entry -values $tCalc::hlist \
-    -postcommand {.entry configure -values $tCalc::hlist}
+    -textvariable tCalc::entry -values $tCalc::history \
+    -postcommand {.entry configure -values $tCalc::history}
   grid .entry -columnspan 5 -sticky we -padx 1 -pady 1
   grid columnconfigure . .entry -weight 1
 
