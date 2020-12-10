@@ -13,53 +13,50 @@ namespace eval tCalc {
   variable precision 3
   variable error     {___tCalcError___}
 }
-# define new 'functions' for expr
+
+# define new functions
 namespace eval tcl::mathfunc {
   proc precision {number precision} {
     expr {double(round(10 ** $precision * $number)) / 10 ** $precision}
   }
-  proc e {} {
-    expr {exp(1)}
+  proc e   {} {expr {exp(1)}}
+  proc pi  {} {expr {acos(-1)}}
+  proc phi {} {expr {(1 + sqrt(5)) / 2}}
+  proc c   {} {return 299792458}
+  proc sind  {x} {expr {sin($x * pi() / 180)}}
+  proc cosd  {x} {expr {cos($x * pi() / 180)}}
+  proc tand  {x} {expr {tan($x * pi() / 180)}}
+  proc asind {x} {expr {asin($x) * 180 / pi()}}
+  proc acosd {x} {expr {acos($x) * 180 / pi()}}
+  proc atand {x} {expr {atan($x) * 180 / pi()}}
+  proc days {x y} {
+    set x [clock scan $x -format {%d%m%Y}]
+    set y [clock scan $y -format {%d%m%Y}]
+    expr {round(($y - $x) / double(60*60*24))}
   }
-  proc p {} {
-    expr {acos(-1)}
+  proc hours {x y} {
+    set x [clock scan $x -format {%H%M}]
+    set y [clock scan $y -format {%H%M}]
+    set hours [expr {$y - $x}]
+    if {$hours < 0} {
+      set hours [expr {[clock add $y 1 day] - $x}]
+    }
+    if {$hours < 0} {
+      set hours [expr {abs($y - $x)}]
+    }
+    expr {$hours / double(60*60)}
   }
-  proc sind {x} {
-    set pi [expr {acos(-1)}]
-    expr {sin($x * ($pi / 180))}
-  }
-  proc cosd {x} {
-    set pi [expr {acos(-1)}]
-    expr {cos($x * ($pi / 180))}
-  }
-  proc tand {x} {
-    set pi [expr {acos(-1)}]
-    expr {tan($x * ($pi / 180))}
-  }
-  proc asind {x} {
-    set pi [expr {acos(-1)}]
-    set x [expr {asin($x)}]
-    expr {$x * (180 / $pi)}
-  }
-  proc acosd {x} {
-    set pi [expr {acos(-1)}]
-    set x [expr {acos($x)}]
-    expr {$x * (180 / $pi)}
-  }
-  proc atand {x} {
-    set pi [expr {acos(-1)}]
-    set x [expr {atan($x)}]
-    expr {$x * (180 / $pi)}
-  }
-}
+  proc btu2watt {x} {expr {$x * 0.29307107}}
+  proc watt2btu {x} {expr {$x / 0.29307107}}
 
-# teach safe interpreter the new proc/functions
-foreach trig {p e sind asind cosd acosd tand atand} {
-  set trig [string cat "tcl::mathfunc::" $trig]
-  $tCalc::safe alias $trig $trig
+  # teach safe interpreter the new functions
+  foreach function [info procs [namespace current]::*] {
+    $tCalc::safe alias $function $function
+  }
 }
 
 # helper function to evaluate with safe interpreter
+# and manage errors and rounding
 proc tCalc::Evaluate {args} {
   set expression [string map {/ *1.0/} [join $args]]
   try {
