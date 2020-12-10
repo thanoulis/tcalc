@@ -29,6 +29,18 @@ namespace eval tcl::mathfunc {
   proc asind {x} {expr {asin($x) * 180 / pi()}}
   proc acosd {x} {expr {acos($x) * 180 / pi()}}
   proc atand {x} {expr {atan($x) * 180 / pi()}}
+  proc quadf {a b c} {
+    try {
+      set d [expr {sqrt(($b**2) - (4 * $a * $c))}]
+    } on error msg {
+      set result "N/A"
+    } on ok msg {
+      set x1 [expr {precision((- $b + $d) / (2 * $a),$tCalc::precision)}]
+      set x2 [expr {precision((- $b - $d) / (2 * $a),$tCalc::precision)}]
+      set result "${x1}\t${x2}"
+    }
+    return $result
+  }
   proc days {x y} {
     set x [clock scan $x -format {%d%m%Y}]
     set y [clock scan $y -format {%d%m%Y}]
