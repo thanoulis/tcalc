@@ -21,24 +21,27 @@
 
 | Constants | Description          |
 |-----------|----------------------|
-| `p()`     | <span>&pi;</span>    |
 | `e()`     | <span>&#8455;</span> |
+| `pi()`    | <span>&pi;</span>    |
+| `phi()`   | <span>&phi;</span>   |
+| `c()      | speed of light       |`
 
-| Function      | Description              | Altenative |
-|---------------|--------------------------|------------|
-| `sqrt(x)`     | <span>&#8730;</span>x    |
-| `pow(x,y)`    | x<sup>y</sup>            | `x**y`     |
-| `fmod(x,y)`   | remainder of `x/y`       | `x%y`      |
-| `hypot(x,y)`  | hypotenuse               |
-| `abs(x)`      | \|x\|                    |
-| `log(x)`      | ln(x)                    |
-| `log10(x)`    | log<sub>10</sub>(x)      |
-| `exp(x)`      | e<sup>x</sup>            |
-| `round(x)`    | nearest integer          |
-| `ceil(x)`     | next smallest integer    |
-| `floor(x)`    | previous largest integer |
-| `max(x,y,..)` | greatest number          |
-| `min(x,y,..)` | smallest number          |
+| Generic        | Description              | Altenative |
+|----------------|--------------------------|------------|
+| `sqrt(x)`      | <span>&#8730;</span>x    |
+| `pow(x,y)`     | x<sup>y</sup>            | `x**y`     |
+| `fmod(x,y)`    | remainder of `x/y`       | `x%y`      |
+| `hypot(x,y)`   | hypotenuse               |
+| `quadf(a,b,c)` | quadratic formula        |
+| `abs(x)`       | \|x\|                    |
+| `log(x)`       | ln(x)                    |
+| `log10(x)`     | log<sub>10</sub>(x)      |
+| `exp(x)`       | e<sup>x</sup>            |
+| `round(x)`     | nearest integer          |
+| `ceil(x)`      | next smallest integer    |
+| `floor(x)`     | previous largest integer |
+| `max(x,y,..)`  | greatest number          |
+| `min(x,y,..)`  | smallest number          |
 
 | Trigonometric | Description        | Type    |
 |---------------|--------------------|---------|
@@ -57,6 +60,16 @@
 | `sinh(x)`     | hyperbolic sine    | radians |
 | `cosh(x)`     | hyperbolic cosine  | radians |
 | `tanh(x)`     | hyperbolic tangent | radians |
+
+| Date/Time      | Description                         |
+|----------------|-------------------------------------|
+| `days(x,y)`    | calcualte days<br/>(format: %d%m%Y) |
+| `hourse(x,y)`  | calculate hours<br/>(format: %H%M)  |
+
+| Convert        | Description           |
+|----------------|-----------------------|
+| `btu2watt(x)`  | convert BTUs to Watts |
+| `watt2btu(x)`  | convert Watts to BTUs |
 
 ----
 
