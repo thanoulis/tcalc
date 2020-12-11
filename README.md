@@ -24,7 +24,7 @@
 | `e()`     | <span>&#8455;</span> |
 | `pi()`    | <span>&pi;</span>    |
 | `phi()`   | <span>&phi;</span>   |
-| `c()      | speed of light       |`
+| `c()`     | speed of light       |
 
 | Generic        | Description              | Altenative |
 |----------------|--------------------------|------------|
@@ -61,10 +61,10 @@
 | `cosh(x)`     | hyperbolic cosine  | radians |
 | `tanh(x)`     | hyperbolic tangent | radians |
 
-| Date/Time      | Description                         |
-|----------------|-------------------------------------|
-| `days(x,y)`    | calcualte days<br/>(format: %d%m%Y) |
-| `hourse(x,y)`  | calculate hours<br/>(format: %H%M)  |
+| Date/Time    | Description                         |
+|--------------|-------------------------------------|
+| `days(x,y)`  | calculate days<br/>format: `%d%m%Y` |
+| `hours(x,y)` | calculate hours<br/>format: `%H%M`  |
 
 | Convert        | Description           |
 |----------------|-----------------------|
