@@ -68,8 +68,12 @@
 
 | Convert        | Description           |
 |----------------|-----------------------|
-| `btu2watt(x)`  | convert BTUs to Watts |
-| `watt2btu(x)`  | convert Watts to BTUs |
+| `c2f(x)`       | Celcius to Fahrenheit |
+| `f2c(x)`       | Fahrenheit to Celcius |
+| `mi2km(x)`     | Miles to Kilometers   |
+| `km2mi(x)`     | Kilometers to Miles   |
+| `btu2watt(x)`  | BTUs to Watts         |
+| `watt2btu(x)`  | Watts to BTUs         |
 
 ----
 
