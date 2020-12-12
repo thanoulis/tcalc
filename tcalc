@@ -58,6 +58,10 @@ namespace eval tcl::mathfunc {
     }
     expr {$hours / double(60*60)}
   }
+  proc c2f {x} {expr {$x * 1.8 + 32}}
+  proc f2c {x} {expr {($x - 32) / 1.8}}
+  proc mi2km {x} {expr {$x * 1.609344}}
+  proc km2mi {x} {expr {$x / 1.609344}}
   proc btu2watt {x} {expr {$x * 0.29307107}}
   proc watt2btu {x} {expr {$x / 0.29307107}}
 
@@ -72,7 +76,7 @@ namespace eval tcl::mathfunc {
 proc tCalc::Evaluate {args} {
   set expression [string map {/ *1.0/} [join $args]]
   try {
-    $tCalc::safe eval "expr $expression"
+    $tCalc::safe eval [list expr $expression]
   } on error msg {
     puts stderr [lindex [split $msg "\n"] 0]
     set result $tCalc::error
@@ -92,7 +96,7 @@ proc tCalc::Evaluate {args} {
 ################################################################################
 # COMMAND LINE
 #
-# if there are command line arguments, show result in terminal and exit
+# if there are command line arguments, print result and exit
 if {$::argc > 0} {
   set result [tCalc::Evaluate $::argv]
   if {$result eq $tCalc::error} {
@@ -208,7 +212,7 @@ proc tCalc::Widgets {} {
   grid .entry -columnspan 5 -sticky we -padx 1 -pady 1
   grid columnconfigure . .entry -weight 1
 
-  set calc_buttons {
+  set layout {
     {7 8 9 ( )}
     {4 5 6 * /}
     {1 2 3 + -}
@@ -216,11 +220,11 @@ proc tCalc::Widgets {} {
   }
   set i 0
   set buttons [list]
-  foreach row $calc_buttons {
+  foreach row $layout {
     foreach key $row {
       switch -- $key {
         =       {set command [list tCalc::Result .entry]}
-        C       {set command [list tCalc::Clear .entry]}
+        C       {set command [list tCalc::Clear  .entry]}
         default {set command [list tCalc::Button .entry $key]}
       }
       lappend buttons [tk::button ".[incr i]" -text $key -takefocus 0 \
