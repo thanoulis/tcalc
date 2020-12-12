@@ -4,7 +4,7 @@
 # VARIABLES
 #
 namespace eval tCalc {
-  variable version   {0.2.6}
+  variable version   {1.0.0}
   variable safe      [interp create -safe]
   variable ontop     {false}
   variable resizable 0
