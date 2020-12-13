@@ -19,24 +19,31 @@ namespace eval tcl::mathfunc {
   proc precision {number precision} {
     expr {double(round(10 ** $precision * $number)) / 10 ** $precision}
   }
+  proc c   {} {return 299792458}
   proc e   {} {expr {exp(1)}}
   proc pi  {} {expr {acos(-1)}}
   proc phi {} {expr {(1 + sqrt(5)) / 2}}
-  proc c   {} {return 299792458}
   proc sind  {x} {expr {sin($x * pi() / 180)}}
   proc cosd  {x} {expr {cos($x * pi() / 180)}}
   proc tand  {x} {expr {tan($x * pi() / 180)}}
   proc asind {x} {expr {asin($x) * 180 / pi()}}
   proc acosd {x} {expr {acos($x) * 180 / pi()}}
   proc atand {x} {expr {atan($x) * 180 / pi()}}
+  proc inv {x} {expr {1 / double($x)}}
+  proc avg {args} {am {*}$args}
+  proc rms {args} {qm {*}$args}
+  proc am {args} {expr {[tcl::mathop::+ {*}$args] * inv([llength $args])}}
+  proc gm {args} {expr {abs([tcl::mathop::* {*}$args])**inv([llength $args])}}
+  proc hm {args} {expr {[llength $args] * inv([tcl::mathop::+ {*}[lmap i $args {expr {inv($i)}}]])}}
+  proc qm {args} {expr {sqrt(inv([llength $args]) * [tcl::mathop::+ {*}[lmap i $args {expr {$i**2}}]])}}
   proc quadf {a b c} {
     try {
       set d [expr {sqrt(($b**2) - (4 * $a * $c))}]
     } on error msg {
       set result "N/A"
     } on ok msg {
-      set x1 [expr {precision((- $b + $d) / (2 * $a),$tCalc::precision)}]
-      set x2 [expr {precision((- $b - $d) / (2 * $a),$tCalc::precision)}]
+      set x1 [expr {precision((- $b + $d) * inv(2 * $a),$tCalc::precision)}]
+      set x2 [expr {precision((- $b - $d) * inv(2 * $a),$tCalc::precision)}]
       set result "${x1}\t${x2}"
     }
     return $result
@@ -44,7 +51,7 @@ namespace eval tcl::mathfunc {
   proc days {x y} {
     set x [clock scan $x -format {%d%m%Y}]
     set y [clock scan $y -format {%d%m%Y}]
-    expr {round(($y - $x) / double(60*60*24))}
+    expr {round(($y - $x) * inv(60*60*24))}
   }
   proc hours {x y} {
     set x [clock scan $x -format {%H%M}]
@@ -56,7 +63,7 @@ namespace eval tcl::mathfunc {
     if {$hours < 0} {
       set hours [expr {abs($y - $x)}]
     }
-    expr {$hours / double(60*60)}
+    expr {$hours * inv(60*60)}
   }
   proc c2f {x} {expr {$x * 1.8 + 32}}
   proc f2c {x} {expr {($x - 32) / 1.8}}
