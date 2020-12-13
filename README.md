@@ -21,27 +21,32 @@
 
 | Constants | Description          |
 |-----------|----------------------|
+| `c()`     | speed of light       |
 | `e()`     | <span>&#8455;</span> |
 | `pi()`    | <span>&pi;</span>    |
 | `phi()`   | <span>&phi;</span>   |
-| `c()`     | speed of light       |
 
-| Generic        | Description              | Altenative |
-|----------------|--------------------------|------------|
+| Generic        | Description              | Altenative    |
+|----------------|--------------------------|---------------|
+| `inv(x)`       | inverse x                | `1/x`         |
 | `sqrt(x)`      | <span>&#8730;</span>x    |
-| `pow(x,y)`     | x<sup>y</sup>            | `x**y`     |
-| `fmod(x,y)`    | remainder of `x/y`       | `x%y`      |
-| `hypot(x,y)`   | hypotenuse               |
+| `pow(x,y)`     | x<sup>y</sup>            | `x**y`        |
+| `fmod(x,y)`    | remainder of `x/y`       | `x%y`         |
+| `hypot(a,b)`   | hypotenuse               |
 | `quadf(a,b,c)` | quadratic formula        |
 | `abs(x)`       | \|x\|                    |
+| `exp(x)`       | e<sup>x</sup>            |
 | `log(x)`       | ln(x)                    |
 | `log10(x)`     | log<sub>10</sub>(x)      |
-| `exp(x)`       | e<sup>x</sup>            |
+| `am(a,b,..)`   | arithmetic mean          | `avg(a,b,..)` |
+| `gm(a,b,..)`   | geometric mean           |
+| `hm(a,b,..)`   | harmonic mean            |
+| `qm(a,b,..)`   | quadratic mean           | `rms(a,b,..)` |
 | `round(x)`     | nearest integer          |
 | `ceil(x)`      | next smallest integer    |
 | `floor(x)`     | previous largest integer |
-| `max(x,y,..)`  | greatest number          |
 | `min(x,y,..)`  | smallest number          |
+| `max(x,y,..)`  | greatest number          |
 
 | Trigonometric | Description        | Type    |
 |---------------|--------------------|---------|
