@@ -13,7 +13,7 @@
 * Full Tcl math support
 * Command Line support
 * Customizable precision
-* Runs in GNU/Linux, MS-Windows and Unix (MacOS not tested)
+* Runs in GNU/Linux, [Microsoft Windows](#for-microsoft-windows-users) and Unix (MacOS not tested)
 
 ----
 
@@ -98,7 +98,7 @@
 
 [ActiveTcl](https://www.activestate.com/activetcl) version 8.6 or later.
 
-Executable can be found in the [Releases](https://github.com/thanoulis/tcalc/releases) section.
+For executables go to [Releases](https://github.com/thanoulis/tcalc/releases) section, or download the [latest](https://github.com/thanoulis/tcalc/releases/latest/download/tcalc.exe).
 
 To run it, after download, right-click->Properties->Unblock.
 
