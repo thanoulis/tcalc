@@ -8,5 +8,5 @@ Icon=accessories-calculator
 Type=Application
 Terminal=false
 Keywords=Calculator;
-Categories=Utility;Calculator
+Categories=Utility;Calculator;
 StartupNotify=false
