@@ -66,10 +66,10 @@
 | `cosh(x)`     | hyperbolic cosine  | radians |
 | `tanh(x)`     | hyperbolic tangent | radians |
 
-| Economy                              | Description           |
-|--------------------------------------|-----------------------|
-| `interest(capital,interest,period)`  | calculate simple ROI  |
-| `cinterset(capital,interest,period)` | calculate compund ROI |
+| Economy                              | Description            |
+|--------------------------------------|------------------------|
+| `interest(capital,interest,period)`  | calculate simple ROI   |
+| `cinterset(capital,interest,period)` | calculate compound ROI |
 
 | Date/Time    | Description                         |
 |--------------|-------------------------------------|
