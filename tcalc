@@ -48,6 +48,8 @@ namespace eval tcl::mathfunc {
     }
     return $result
   }
+  proc interest  {capital interest period} {expr {$capital * (1 + ($interest * $period))}}
+  proc cinterest {capital interest period} {expr {$capital * ((1 + $interest) ** $period)}}
   proc days {x y} {
     set x [clock scan $x -format {%d%m%Y}]
     set y [clock scan $y -format {%d%m%Y}]
