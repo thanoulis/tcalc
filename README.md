@@ -66,6 +66,11 @@
 | `cosh(x)`     | hyperbolic cosine  | radians |
 | `tanh(x)`     | hyperbolic tangent | radians |
 
+| Economy                              | Description           |
+|--------------------------------------|-----------------------|
+| `interest(capital,interest,period)`  | calculate simple ROI  |
+| `cinterset(capital,interest,period)` | calculate compund ROI |
+
 | Date/Time    | Description                         |
 |--------------|-------------------------------------|
 | `days(x,y)`  | calculate days<br/>format: `%d%m%Y` |
