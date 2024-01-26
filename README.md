@@ -69,7 +69,7 @@
 | Economy                              | Description            |
 |--------------------------------------|------------------------|
 | `interest(capital,interest,period)`  | calculate simple ROI   |
-| `cinterset(capital,interest,period)` | calculate compound ROI |
+| `cinterest(capital,interest,period)` | calculate compound ROI |
 
 | Date/Time    | Description                         |
 |--------------|-------------------------------------|
