@@ -78,6 +78,9 @@ namespace eval tcl::mathfunc {
   foreach function [info procs [namespace current]::*] {
     $tCalc::safe alias $function $function
   }
+  # ln() is log(), log() is log10()
+  $tCalc::safe alias [namespace current]::ln  [namespace current]::log
+  $tCalc::safe alias [namespace current]::log [namespace current]::log10
 }
 
 # helper function to evaluate with safe interpreter
