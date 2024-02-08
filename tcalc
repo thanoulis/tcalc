@@ -4,7 +4,7 @@
 # VARIABLES
 #
 namespace eval tCalc {
-  variable version   {1.2.1}
+  variable version   {1.2.2}
   variable safe      [interp create -safe]
   variable ontop     {false}
   variable resizable 0
@@ -109,7 +109,9 @@ proc tCalc::Evaluate {expression} {
 #
 # if there are command line arguments, print result and exit
 if {$::argc > 0} {
-  set result [tCalc::Evaluate {*}$::argv]
+  # join/list/{*}$::argv make a string out of the arguments
+  # fixes errors with spaces in command line
+  set result [tCalc::Evaluate [join [list {*}$::argv]]]
   if {$result eq $tCalc::error} {
     exit 255
   } else {
