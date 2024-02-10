@@ -19,12 +19,14 @@
 
 #### Constants & Functions
 
-| Constants | Description          |
-|-----------|----------------------|
-| `c()`     | speed of light       |
-| `e()`     | <span>&#8455;</span> |
-| `pi()`    | <span>&pi;</span>    |
-| `phi()`   | <span>&phi;</span>   |
+| Constants | Description            |
+|-----------|------------------------|
+| `c()`     | speed of light         |
+| `G()`     | gravitational constant |
+| `g()`     | gravity acceleration   |
+| `e()`     | <span>&#8455;</span>   |
+| `pi()`    | <span>&pi;</span>      |
+| `phi()`   | <span>&phi;</span>     |
 
 | Generic        | Description              | Altenative    |
 |----------------|--------------------------|---------------|
@@ -81,10 +83,18 @@
 |----------------|-----------------------|
 | `c2f(x)`       | Celcius to Fahrenheit |
 | `f2c(x)`       | Fahrenheit to Celcius |
+| `c2k(x)`       | Celcius to Kelvin     |
+| `k2c(x)`       | Kelvin to Celcius     |
+| `inch2cm(x)`   | inches to centimeters |
+| `cm2inch(x)`   | centimeters to inches |
+| `yd2m(x)`      | yards to meters       |
+| `m2yd(x)`      | meters to yards       |
+| `ft2m(x)`      | feet to meters        |
+| `m2ft(x)`      | meters to feet        |
 | `mi2km(x)`     | Miles to Kilometers   |
 | `km2mi(x)`     | Kilometers to Miles   |
-| `btu2watt(x)`  | BTUs to Watts         |
-| `watt2btu(x)`  | Watts to BTUs         |
+| `btu2watt(x)`  | BTU to Watt           |
+| `watt2btu(x)`  | Watt to BTU           |
 
 ----
 
