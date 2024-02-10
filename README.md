@@ -36,6 +36,7 @@
 | `quadf(a,b,c)` | quadratic formula        |
 | `abs(x)`       | \|x\|                    |
 | `exp(x)`       | e<sup>x</sup>            |
+| `factorial(x)` | x!                       |               |
 | `ln(x)`        | ln(x)                    |
 | `log(x)`       | log<sub>10</sub>(x)      | `log10(x)`    |
 | `am(a,b,..)`   | arithmetic mean          | `avg(a,b,..)` |
