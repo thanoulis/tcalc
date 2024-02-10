@@ -38,14 +38,14 @@ namespace eval tcl::mathfunc {
   proc inv {x} {expr {1 / double($x)}}
   # arithmetic mean
   proc avg {args} {am {*}$args}
-  proc am {args} {expr {[tcl::mathop::+ {*}$args] * inv([llength $args])}}
+  proc am  {args} {expr {[tcl::mathop::+ {*}$args] * inv([llength $args])}}
   # geometric mean
   proc gm {args} {expr {abs([tcl::mathop::* {*}$args])**inv([llength $args])}}
   # harmonic mean
   proc hm {args} {expr {[llength $args] * inv([tcl::mathop::+ {*}[lmap i $args {expr {inv($i)}}]])}}
   # quadratic mean
   proc rms {args} {qm {*}$args}
-  proc qm {args} {expr {sqrt(inv([llength $args]) * [tcl::mathop::+ {*}[lmap i $args {expr {$i**2}}]])}}
+  proc qm  {args} {expr {sqrt(inv([llength $args]) * [tcl::mathop::+ {*}[lmap i $args {expr {$i**2}}]])}}
   # quadratic formula
   proc quadf {a b c} {
     try {
@@ -95,9 +95,12 @@ namespace eval tcl::mathfunc {
     }
     expr {$hours * inv(60*60)}
   }
-  # celcius/fahrenheit
+  # fahrenheit/celcius
   proc f2c {x} {expr {($x - 32) / 1.8}}
   proc c2f {x} {expr {($x * 1.8) + 32}}
+  # inch/centimeters
+  proc inch2cm {x} {expr {$x * 2.54}}
+  proc cm2inch {x} {expr {$x / 2.54}}
   # miles/kilometers
   proc mi2km {x} {expr {$x * 1.609344}}
   proc km2mi {x} {expr {$x / 1.609344}}
