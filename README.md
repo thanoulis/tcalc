@@ -91,8 +91,8 @@
 | `m2yd(x)`      | meters to yards       |
 | `ft2m(x)`      | feet to meters        |
 | `m2ft(x)`      | meters to feet        |
-| `mi2km(x)`     | Miles to Kilometers   |
-| `km2mi(x)`     | Kilometers to Miles   |
+| `mi2km(x)`     | miles to kilometers   |
+| `km2mi(x)`     | kilometers to miles   |
 | `btu2watt(x)`  | BTU to Watt           |
 | `watt2btu(x)`  | Watt to BTU           |
 
