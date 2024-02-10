@@ -21,6 +21,10 @@ namespace eval tcl::mathfunc {
   }
   # speed of light
   proc c   {} {return 299792458}
+  # gravitational constant
+  proc G   {} {expr {6.674 * pow(10,-11)}}
+  # earth's gratitational acceleration
+  proc g   {} {return 9.80665}
   # Euler's number (2.71828)
   proc e   {} {expr {exp(1)}}
   # π (3.1415)
