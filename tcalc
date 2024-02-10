@@ -98,9 +98,18 @@ namespace eval tcl::mathfunc {
   # fahrenheit/celcius
   proc f2c {x} {expr {($x - 32) / 1.8}}
   proc c2f {x} {expr {($x * 1.8) + 32}}
-  # inch/centimeters
+  # celcius/kelvin
+  proc k2c {x} {expr {$x - 273.15}}
+  proc c2k {x} {expr {$x + 273.15}}
+  # inches/centimeters
   proc inch2cm {x} {expr {$x * 2.54}}
   proc cm2inch {x} {expr {$x / 2.54}}
+  # yards/meters
+  proc yd2m {x} {expr {$x * 0.9144}}
+  proc m2yd {x} {expr {$x / 0.9144}}
+  # feet/meters
+  proc ft2m {x} {expr {$x * 0.3048}}
+  proc m2ft {x} {expr {$x / 0.3048}}
   # miles/kilometers
   proc mi2km {x} {expr {$x * 1.609344}}
   proc km2mi {x} {expr {$x / 1.609344}}
