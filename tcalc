@@ -14,33 +14,45 @@ namespace eval tCalc {
   variable error     {___tCalcError___}
 }
 
-# define new functions
+# define new mathematic functions
 namespace eval tcl::mathfunc {
   proc precision {number precision} {
     expr {double(round(10 ** $precision * $number)) / 10 ** $precision}
   }
+  # speed of light
   proc c   {} {return 299792458}
+  # Euler's number (2.71828)
   proc e   {} {expr {exp(1)}}
+  # π (3.1415)
   proc pi  {} {expr {acos(-1)}}
+  # φ (golden ratio)
   proc phi {} {expr {(1 + sqrt(5)) / 2}}
+  # trigonometric functions (degrees)
   proc sind  {x} {expr {sin($x * pi() / 180)}}
   proc cosd  {x} {expr {cos($x * pi() / 180)}}
   proc tand  {x} {expr {tan($x * pi() / 180)}}
   proc asind {x} {expr {asin($x) * 180 / pi()}}
   proc acosd {x} {expr {acos($x) * 180 / pi()}}
   proc atand {x} {expr {atan($x) * 180 / pi()}}
+  # 1/x
   proc inv {x} {expr {1 / double($x)}}
+  # arithmetic mean
   proc avg {args} {am {*}$args}
-  proc rms {args} {qm {*}$args}
   proc am {args} {expr {[tcl::mathop::+ {*}$args] * inv([llength $args])}}
+  # geometric mean
   proc gm {args} {expr {abs([tcl::mathop::* {*}$args])**inv([llength $args])}}
+  # harmonic mean
   proc hm {args} {expr {[llength $args] * inv([tcl::mathop::+ {*}[lmap i $args {expr {inv($i)}}]])}}
+  # quadratic mean
+  proc rms {args} {qm {*}$args}
   proc qm {args} {expr {sqrt(inv([llength $args]) * [tcl::mathop::+ {*}[lmap i $args {expr {$i**2}}]])}}
+  # quadratic formula
   proc quadf {a b c} {
     try {
       set d [expr {sqrt(($b**2) - (4 * $a * $c))}]
     } on error msg {
-      set result "N/A"
+      puts stderr "no roots in R"
+      set result $tCalc::error
     } on ok msg {
       set x1 [expr {precision((- $b + $d) * inv(2 * $a),$tCalc::precision)}]
       set x2 [expr {precision((- $b - $d) * inv(2 * $a),$tCalc::precision)}]
@@ -48,13 +60,31 @@ namespace eval tcl::mathfunc {
     }
     return $result
   }
+  # factorial (x!)
+  proc factorial {x} {
+    if {$x < 0} {
+      puts stderr "domain error: argument not in valid range"
+      set result $tCalc::error
+    } else {
+      set i 1; set result 1
+      while {$i <= $x} {
+        set result [expr {$i * $result}]
+        incr i
+      }
+    }
+    return $result
+  }
+  # interest
   proc interest  {capital interest period} {expr {$capital * (1 + ($interest * $period))}}
+  # compound interest
   proc cinterest {capital interest period} {expr {$capital * ((1 + $interest) ** $period)}}
+  # difference between two days (format: ddmmyyyy)
   proc days {x y} {
     set x [clock scan $x -format {%d%m%Y}]
     set y [clock scan $y -format {%d%m%Y}]
     expr {round(($y - $x) * inv(60*60*24))}
   }
+  # difference between two hours (24h format: hhmm)
   proc hours {x y} {
     set x [clock scan $x -format {%H%M}]
     set y [clock scan $y -format {%H%M}]
@@ -67,10 +97,13 @@ namespace eval tcl::mathfunc {
     }
     expr {$hours * inv(60*60)}
   }
-  proc c2f {x} {expr {$x * 1.8 + 32}}
+  # celcius/fahrenheit
   proc f2c {x} {expr {($x - 32) / 1.8}}
+  proc c2f {x} {expr {($x * 1.8) + 32}}
+  # miles/kilometers
   proc mi2km {x} {expr {$x * 1.609344}}
   proc km2mi {x} {expr {$x / 1.609344}}
+  # btu/watt
   proc btu2watt {x} {expr {$x * 0.29307107}}
   proc watt2btu {x} {expr {$x / 0.29307107}}
 
@@ -109,9 +142,8 @@ proc tCalc::Evaluate {expression} {
 #
 # if there are command line arguments, print result and exit
 if {$::argc > 0} {
-  # join/list/{*}$::argv make a string out of the arguments
   # fixes errors with spaces in command line
-  set result [tCalc::Evaluate [join [list {*}$::argv]]]
+  set result [tCalc::Evaluate [join $::argv]]
   if {$result eq $tCalc::error} {
     exit 255
   } else {
