@@ -51,7 +51,6 @@ namespace eval tcl::mathfunc {
     try {
       set d [expr {sqrt(($b**2) - (4 * $a * $c))}]
     } on error msg {
-      puts stderr "no roots in R"
       set result $tCalc::error
     } on ok msg {
       set x1 [expr {precision((- $b + $d) * inv(2 * $a),$tCalc::precision)}]
@@ -63,7 +62,6 @@ namespace eval tcl::mathfunc {
   # factorial (x!)
   proc factorial {x} {
     if {$x < 0} {
-      puts stderr "domain error: argument not in valid range"
       set result $tCalc::error
     } else {
       set i 1; set result 1
