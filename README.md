@@ -41,7 +41,7 @@
 | `factorial(x)`   | x!                       |               |
 | `ln(x)`          | ln(x)                    |
 | `log(x)`         | log<sub>10</sub>(x)      | `log10(x)`    |
-| `logb(base,x)    | log<sub>base</sub>(x)    |
+| `logb(base,x)`   | log<sub>base</sub>(x)    |
 | `am(a,b,..)`     | arithmetic mean          | `avg(a,b,..)` |
 | `gm(a,b,..)`     | geometric mean           |
 | `hm(a,b,..)`     | harmonic mean            |
