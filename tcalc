@@ -28,7 +28,7 @@ namespace eval tcl::mathfunc {
   # Euler's number (2.71828)
   proc e   {} {expr {exp(1)}}
   # π (3.1415)
-  proc pi  {} {expr {acos(-1)}}
+  proc pi  {} {return 3.1415926535897931}
   # φ (golden ratio)
   proc phi {} {expr {(1 + sqrt(5)) / 2}}
   # trigonometric functions (degrees)
@@ -40,6 +40,15 @@ namespace eval tcl::mathfunc {
   proc atand {x} {expr {atan($x) * 180 / pi()}}
   # 1/x
   proc inv {x} {expr {1 / double($x)}}
+  # median
+  proc median {args} {
+  if {[set length [llength $args]] % 2} then {
+      lindex [lsort -real $args] [expr {($length - 1) / 2}]
+    } else {
+      expr {([lindex [set sorted [lsort -real $args]] [expr {($length / 2) - 1}]] \
+        + [lindex $sorted [expr {$length / 2}]]) / 2.0}
+    }
+  }
   # arithmetic mean
   proc avg {args} {am {*}$args}
   proc am  {args} {expr {[tcl::mathop::+ {*}$args] * inv([llength $args])}}
@@ -57,24 +66,16 @@ namespace eval tcl::mathfunc {
     } on error msg {
       set result $tCalc::error
     } on ok msg {
-      set x1 [expr {precision((- $b + $d) * inv(2 * $a),$tCalc::precision)}]
-      set x2 [expr {precision((- $b - $d) * inv(2 * $a),$tCalc::precision)}]
-      set result "${x1}\t${x2}"
+      set result [list \
+        [expr {precision((- $b + $d) * inv(2 * $a),$tCalc::precision)}] \
+        [expr {precision((- $b - $d) * inv(2 * $a),$tCalc::precision)}]]
+    } finally {
+      return $result
     }
-    return $result
   }
   # factorial (x!)
   proc factorial {x} {
-    if {$x < 0} {
-      set result $tCalc::error
-    } else {
-      set i 1; set result 1
-      while {$i <= $x} {
-        set result [expr {$i * $result}]
-        incr i
-      }
-    }
-    return $result
+    expr {$x < 2 ? 1 : $x * factorial($x - 1)}
   }
   # interest
   proc interest  {capital interest period} {expr {$capital * (1 + ($interest * $period))}}
@@ -98,6 +99,10 @@ namespace eval tcl::mathfunc {
       set hours [expr {abs($y - $x)}]
     }
     expr {$hours * inv(60*60)}
+  }
+  # decimals to degrees
+  proc dec2deg {x} {
+    concat [expr {int($x)}] [clock format [expr {round($x * 3600)}] -format "%M' %S\""]
   }
   # fahrenheit/celcius
   proc f2c {x} {expr {($x - 32) / 1.8}}
