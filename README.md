@@ -28,28 +28,31 @@
 | `pi()`    | <span>&pi;</span>      |
 | `phi()`   | <span>&phi;</span>     |
 
-| Generic        | Description              | Altenative    |
-|----------------|--------------------------|---------------|
-| `inv(x)`       | inverse x                | `1/x`         |
-| `sqrt(x)`      | <span>&#8730;</span>x    |
-| `pow(x,y)`     | x<sup>y</sup>            | `x**y`        |
-| `fmod(x,y)`    | remainder of `x/y`       | `x%y`         |
-| `hypot(a,b)`   | hypotenuse               |
-| `quadf(a,b,c)` | quadratic formula        |
-| `abs(x)`       | \|x\|                    |
-| `exp(x)`       | e<sup>x</sup>            |
-| `factorial(x)` | x!                       |               |
-| `ln(x)`        | ln(x)                    |
-| `log(x)`       | log<sub>10</sub>(x)      | `log10(x)`    |
-| `am(a,b,..)`   | arithmetic mean          | `avg(a,b,..)` |
-| `gm(a,b,..)`   | geometric mean           |
-| `hm(a,b,..)`   | harmonic mean            |
-| `qm(a,b,..)`   | quadratic mean           | `rms(a,b,..)` |
-| `round(x)`     | nearest integer          |
-| `ceil(x)`      | next smallest integer    |
-| `floor(x)`     | previous largest integer |
-| `min(x,y,..)`  | smallest number          |
-| `max(x,y,..)`  | greatest number          |
+| Generic          | Description              | Altenative    |
+|------------------|--------------------------|---------------|
+| `inv(x)`         | inverse x                | `1/x`         |
+| `sqrt(x)`        | <span>&#8730;</span>x    |
+| `pow(x,y)`       | x<sup>y</sup>            | `x**y`        |
+| `fmod(x,y)`      | remainder of `x/y`       | `x%y`         |
+| `hypot(a,b)`     | hypotenuse               |
+| `quadf(a,b,c)`   | quadratic formula        |
+| `abs(x)`         | \|x\|                    |
+| `exp(x)`         | e<sup>x</sup>            |
+| `factorial(x)`   | x!                       |               |
+| `ln(x)`          | ln(x)                    |
+| `log(x)`         | log<sub>10</sub>(x)      | `log10(x)`    |
+| `logb(base,x)    | log<sub>base</sub>(x)    |
+| `am(a,b,..)`     | arithmetic mean          | `avg(a,b,..)` |
+| `gm(a,b,..)`     | geometric mean           |
+| `hm(a,b,..)`     | harmonic mean            |
+| `qm(a,b,..)`     | quadratic mean           | `rms(a,b,..)` |
+| `round(x)`       | nearest integer          |
+| `ceil(x)`        | next smallest integer    |
+| `floor(x)`       | previous largest integer |
+| `min(x,y,..)`    | smallest number          |
+| `max(x,y,..)`    | greatest number          |
+| `median(x,y,..)` | median number            |
+| `fib(x)`         | fibonacci number         |
 
 | Trigonometric | Description        | Type    |
 |---------------|--------------------|---------|
@@ -74,10 +77,11 @@
 | `interest(capital,interest,period)`  | calculate simple ROI   |
 | `cinterest(capital,interest,period)` | calculate compound ROI |
 
-| Date/Time    | Description                         |
-|--------------|-------------------------------------|
-| `days(x,y)`  | calculate days<br/>format: `%d%m%Y` |
-| `hours(x,y)` | calculate hours<br/>format: `%H%M`  |
+| Date/Time      | Description                         |
+|----------------|-------------------------------------|
+| `days(x,y)`    | calculate days<br/>format: `%d%m%Y` |
+| `hours(x,y)`   | calculate hours<br/>format: `%H%M`  |
+| `dec2deg(x,y)` | decimals to degrees                 |
 
 | Convert        | Description           |
 |----------------|-----------------------|
