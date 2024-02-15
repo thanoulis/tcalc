@@ -4,7 +4,7 @@
 # VARIABLES
 #
 namespace eval tCalc {
-  variable version   {1.2.3}
+  variable version   {1.2.4}
   variable safe      [interp create -safe]
   variable ontop     {false}
   variable resizable 0
@@ -59,7 +59,7 @@ namespace eval tcl::mathfunc {
         + [lindex $sorted [expr {$length / 2}]]) / 2.0}
     }
   }
-  # log in any base
+  # logarithm in any base
   proc logb {base x} {
     expr {log($x) / log($base)}
   }
