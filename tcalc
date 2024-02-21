@@ -20,17 +20,17 @@ namespace eval tcl::mathfunc {
     expr {double(round(10 ** $precision * $number)) / 10 ** $precision}
   }
   # speed of light
-  proc c   {} {return 299792458}
+  proc c {} {return 299792458}
   # gravitational constant
-  proc G   {} {expr {6.674 * pow(10,-11)}}
+  proc G {} {expr {6.674 * pow(10,-11)}}
   # earth's gratitational acceleration
-  proc g   {} {return 9.80665}
-  # Euler's number (2.71828)
-  proc e   {} {expr {exp(1)}}
-  # π (3.1415)
-  proc pi  {} {return 3.1415926535897931}
-  # φ (golden ratio)
-  proc phi {} {expr {(1 + sqrt(5)) / 2}}
+  proc g {} {return 9.80665}
+  # e = exp(1)
+  proc e {} {return 2.718281828459045}
+  # π = acos(-1)
+  proc pi {} {return 3.141592653589793}
+  # φ = (1+sqrt(5))/2
+  proc phi {} {return 1.618033988749895}
   # trigonometric functions (degrees)
   proc sind  {x} {expr {sin($x * pi() / 180)}}
   proc cosd  {x} {expr {cos($x * pi() / 180)}}
@@ -64,8 +64,8 @@ namespace eval tcl::mathfunc {
     expr {log($x) / log($base)}
   }
   # fibonacci numbers
-  proc fib n {
-    expr {round(1/sqrt(5)*(pow((1+sqrt(5))/2,$n) - (pow((1-sqrt(5))/2,$n))))}
+  proc fib {x} {
+    expr {round(1 / sqrt(5) * (pow((1 + sqrt(5)) / 2,$x) - (pow((1 - sqrt(5)) / 2,$x))))}
   }
   # quadratic formula
   proc quadf {a b c} {
